@@ -1,4 +1,7 @@
-# React + TypeScript + Vite
+# Industry Atlas
+
+A rewrite of [cbp-visualizer](https://github.com/kenny101/cbp-visualizer)
+
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

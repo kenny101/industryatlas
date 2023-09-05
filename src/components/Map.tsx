@@ -3,6 +3,7 @@ import { MapContainer, ScaleControl, GeoJSON } from "react-leaflet";
 import mapData from "../assets/counties.json";
 import worldData from "../assets/worldOutline.json";
 import './Map.css';
+
 const countyLayers: any = [];
 
 var val: any;
@@ -46,10 +47,10 @@ const renderedMap = () => {
         >
           <ScaleControl />
 
-          <GeoJSON style={worldStyle} data={worldData.features}></GeoJSON>
+          <GeoJSON style={worldStyle} data={worldData.features as any}></GeoJSON>
           <GeoJSON
             style={countyStyle}
-            data={mapData.features}
+            data={mapData as any}
             onEachFeature={onEachCounty}
           ></GeoJSON>
         </MapContainer>
@@ -60,7 +61,7 @@ const renderedMap = () => {
 };
 
 const onEachCounty = (county: any, layer: any) => {
-  const [countyName, stateName] = county.properties.COUNTY_STATE_NAME.split(',').map(part => part.trim());
+  const [countyName, stateName] = county.properties.COUNTY_STATE_NAME.split(',').map((part: string) => part.trim());
   countyLayers.push([layer, county]);
   layer.bindPopup(
     "<p><b>State<b/>: " +
@@ -75,16 +76,13 @@ const onEachCounty = (county: any, layer: any) => {
     { closeButton: false }
   );
 
-  layer.on("mouseover", function (e) {
+  layer.on("mouseover", function (e: L.LeafletMouseEvent) {
     layer.openPopup(e.latlng, layer.setStyle(onHoverStyle));
   });
 
-  layer.on("mouseout", function (e) {
+  layer.on("mouseout", function () {
     layer.closePopup(layer.setStyle(defaultLayerStyle));
   });
 };
-
-
-
 
 export default renderedMap;

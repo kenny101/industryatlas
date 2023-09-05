@@ -1,11 +1,11 @@
 import IconGithub from "../assets/IconGithub";
 
-const btnStyle = {
+const btnStyle: React.CSSProperties = {
   position: "fixed",
   top: "10px",
   right: "10px",
   padding: "10px",
-  zIndex: "1000",
+  zIndex: 1000,
   fontSize: "40px",
   border: "none",
   width: "60px",

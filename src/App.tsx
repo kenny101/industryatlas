@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Map from './components/Map';
 import Legend from './components/Legend';
 import Sidebar from './components/Sidebar';

@@ -1,0 +1,17 @@
+/* Apply font-mono to text within the map container */
+.map-container {
+  font-family: monospace; /* Replace with the actual font family you want */
+}
+
+/* If needed, you can target specific elements within the map */
+.map-container .leaflet-popup-content {
+  font-family: monospace; /* Replace with the actual font family you want */
+}
+
+.leaflet-control-scale-line {
+  font-family: monospace; /* Replace with the actual font family you want */
+}
+
+p {
+    font-size: 16px;
+}

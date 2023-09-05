@@ -1,0 +1,5 @@
+/* In your CSS or with Tailwind CSS classes */
+html,
+body {
+  overflow: hidden;
+}

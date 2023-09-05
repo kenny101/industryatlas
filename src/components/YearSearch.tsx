@@ -30,7 +30,7 @@ export default function Search() {
                     matches.map((value) => (
                         <Ariakit.ComboboxItem
                             key={value}
-                            value={value}
+                            value={value.toString()}
                             className="combobox-item"
                         />
                     ))

@@ -1,34 +1,73 @@
+import { yearAtom } from "../App";
+import { useAtomValue } from 'jotai'
+import { hoveredCountyAtom, hoveredStateCodeAtom, topSectorsMapAtom, selectedSectorAtom } from "../App";
+
+type TopSectorsMap = {
+  [county: string]: string[];
+};
+
 const TopSectorsList = () => {
-    // Dummy data
-    const dummyData = [
-      { name: 'Bonnie Green', points: 70 },
-      { name: 'Jese Leos', points: 63 },
-      { name: 'Leslie Livingston', points: 57 },
-      { name: 'John Doe', points: 55 },
-      { name: 'Jane Smith', points: 52 },
-      { name: 'Alice Johnson', points: 49 },
-      { name: 'Bob Wilson', points: 45 },
-      { name: 'Eva Davis', points: 42 },
-      { name: 'Mike Brown', points: 39 },
-      { name: 'Emily White', points: 36 }, // One more entry
-    ];
-  
+  const year = useAtomValue(yearAtom);
+  const hoveredCounty = useAtomValue(hoveredCountyAtom);
+  const topSectorsMap: TopSectorsMap = useAtomValue(topSectorsMapAtom);
+  const hoveredStateCode = useAtomValue(hoveredStateCodeAtom);
+  const selectedSector = useAtomValue(selectedSectorAtom);
+  const topSectorsKey = `${hoveredCounty}, ${hoveredStateCode}`
+  const topSectors = topSectorsMap[topSectorsKey];
+
+  if (year === "YEAR") {
     return (
-      <div className="m-5">
-        <h2 className="mb-2 text-lg font-semibold text-gray-900">
-          Top 10 Sectors in <span>COUNTY</span> in <span>YEAR:</span>
-        </h2>
-        <ol className="max-w-md space-y-1 text-gray-900 list-decimal list-inside">
-          {dummyData.slice(0, 10).map((entry, index) => (
-            <li key={index}>
-              <span className="font-semibold text-gray-900">{entry.name}</span> with{' '}
-              <span className="font-semibold text-gray-900">{entry.points}</span> points
-            </li>
-          ))}
-        </ol>
+      <div className="m-5 w-80">
+        <div className="alert">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-info shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span>Select a year and sector to display top sectors for each hovered county</span>
+        </div>
       </div>
     );
-  };
-  
-  export default TopSectorsList;
-  
+  }
+
+  if (selectedSector === "") {
+    return (
+      <div className="m-5 w-80">
+        <div className="alert">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-info shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span>Select a sector</span>
+        </div>
+      </div>
+    );
+  }
+
+
+
+  if (!topSectors || topSectors.length === 0) {
+    return (
+      <div className="m-5 w-80">
+        <h2 className="mb-2 text-lg font-semibold text-gray-900">
+          Top 10 Sectors in <span>{hoveredCounty}</span> in <span>{year}</span>:
+        </h2>
+        <div className="alert alert-error">
+          <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          <span>Error: No Data Avaliable for {hoveredCounty}, {hoveredStateCode}</span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="m-5">
+      <h2 className="mb-2 text-lg font-semibold text-gray-900">
+        Top 10 Sectors in <span>{hoveredCounty}</span> in <span>{year}</span>:
+      </h2>
+      <ol className="max-w-md space-y-1 text-gray-900 list-decimal list-inside">
+        {topSectors.slice(0, 10).map((sectorValue, _) => (
+          <li key={sectorValue}>
+            <span className="font-semibold text-gray-900">{sectorValue.split(": ")[0]}</span>:
+            <span className="font-semibold text-gray-900">{sectorValue.split(": ")[1]}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+};
+
+export default TopSectorsList;

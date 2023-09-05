@@ -1,7 +1,6 @@
 import './Legend.css';
-import {
-  useState
-} from 'react';
+import { useAtomValue } from 'jotai';
+import { quantilesAtom } from '../App';
 
 /**
  * Determine the color code based on a value and predefined grade ranges.
@@ -13,32 +12,26 @@ function getColor(value: number, grades: number[]): string {
   const colorIndex = grades.findIndex(grade => value <= grade);
   switch (colorIndex) {
     case 0:
-      return "#ffffcc"; // Replace with your desired color
+      return "#ffffd9";
     case 1:
-      return "#ffeda0"; // Replace with your desired color
+      return "#edf8b1";
     case 2:
-      return "#fed976"; // Replace with your desired color
+      return "#c7e9b4";
     case 3:
-      return "#feb24c"; // Replace with your desired color
+      return "#7fcdbb";
     case 4:
-      return "#fd8d3c"; // Replace with your desired color
+      return "#41b6c4";
     case 5:
-      return "#fc4e2a"; // Replace with your desired color
+      return "#1d91c0";
     case 6:
-      return "#e31a1c"; // Replace with your desired color
+      return "#225ea8";
     default:
-      return "#b10026"; // Replace with your desired color
+      return "#0c2c84";
   }
 }
 
-
-interface LegendProps {
-  // Define any props if needed
-}
-
-const Legend: React.FC<LegendProps> = () => {
-  const [grades, _] = useState<number[]>([0, 10, 20, 50, 100, 200, 500, 1000]);
-
+const Legend: React.FC = () => {
+  const grades = useAtomValue(quantilesAtom);
   return (
     <div className="legend bg-orange-50">
       {grades.map((grade, index) => (
@@ -48,7 +41,7 @@ const Legend: React.FC<LegendProps> = () => {
             style={{ backgroundColor: getColor(grade, grades) }}
           ></span>
           <span className="legend-label font-semibold text-sm">
-            {index === 0 ? `< ${grade}` : `${grades[index - 1]} - ${grade}`}
+            {index === 0 ? `${grade}` : `${grades[index - 1]+1} - ${grade}`}
           </span>
         </div>
       ))}

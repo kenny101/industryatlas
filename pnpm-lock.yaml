@@ -14,9 +14,6 @@ dependencies:
   axios:
     specifier: ^1.5.0
     version: 1.5.0
-  geojson:
-    specifier: ^0.5.0
-    version: 0.5.0
   leaflet:
     specifier: ^1.9.4
     version: 1.9.4
@@ -1313,11 +1310,6 @@ packages:
   /function-bind@1.1.1:
     resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
     dev: true
-
-  /geojson@0.5.0:
-    resolution: {integrity: sha512-/Bx5lEn+qRF4TfQ5aLu6NH+UKtvIv7Lhc487y/c8BdludrCTpiWf9wyI0RTyqg49MFefIAvFDuEi5Dfd/zgNxQ==}
-    engines: {node: '>= 0.10'}
-    dev: false
 
   /glob-parent@5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}

@@ -13,8 +13,6 @@ export const sectorOptionsAtom = atom([{ value: 'Select a year to display sector
 export const quantilesAtom = atom([0, 10, 20, 50, 100, 200, 500, 1000]);
 export const employmentAtom = atom({});
 export const topSectorsMapAtom = atom({});
-export const dataAvaliableAtom = atom(true);
-
 
 const App: React.FC = () => {
   return (

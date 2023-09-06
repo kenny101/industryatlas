@@ -9,7 +9,7 @@ import { yearAtom, sectorOptionsAtom, quantilesAtom, employmentAtom, topSectorsM
 import PocketBase from 'pocketbase';
 
 const pb = new PocketBase('http://127.0.0.1:8090');
-const startYear = 1986;
+const startYear = 1975;
 const endYear = 2016;
 const options = Array.from({ length: endYear - startYear + 1 }, (_, index) => ({
     value: startYear + index,
@@ -30,7 +30,6 @@ const customStyles: StylesConfig = {
     }),
 };
 
-
 const Navbar = () => {
     const [year, setYear] = useAtom(yearAtom);
     const [sectorOptions, setSectorOptions] = useAtom(sectorOptionsAtom);
@@ -38,6 +37,31 @@ const Navbar = () => {
     const [, setEmployment] = useAtom(employmentAtom);
     const [, setTopSectorsMap] = useAtom(topSectorsMapAtom);
     const [, setSelectedSector] = useAtom(selectedSectorAtom);
+
+    async function updateSectors(sectorToUpdate: any) {
+        setSelectedSector(sectorToUpdate);
+        const querySector = sectorToUpdate.value.toString();
+        const record = await pb.collection(`counties_${year}`).getFirstListItem(`sector~"${querySector}"`);
+        setQuantiles(record['quantiles']);
+        const employmentMap: any = {};
+        record['employment'].forEach((entry: { [x: string]: number; }) => {
+            const county = entry["County"];
+            const state = entry["State"];
+            employmentMap[`${county}, ${state}`] = [entry["Percent"], entry["Value"]]
+        });
+
+        setEmployment(employmentMap)
+
+        const records = await pb.collection(`sectors_${year}`).getFullList();
+        const countyToTopSectorsMap: { [key: string]: string[] } = {};
+        records.forEach(record => {
+            const topSectors = record.topSectors;
+            countyToTopSectorsMap[record.county] = topSectors;
+        });
+
+        setTopSectorsMap(countyToTopSectorsMap);
+    }
+
 
 
     return (
@@ -77,8 +101,8 @@ const Navbar = () => {
                             else if (value >= 1988 && value <= 1997) {
                                 queryYear = "1988-1997";
                             }
-                            else if (value == 1986) {
-                                queryYear = "1986"
+                            else if (value >= 1975 && value <= 1986) {
+                                queryYear = "1975-1986"
                             }
                             else if (value == 1987) {
                                 queryYear = "1987"
@@ -87,9 +111,8 @@ const Navbar = () => {
                             if (queryYear >= year || year <= queryYear) {
                                 return;
                             }
-                            const record = await pb.collection('years').getFirstListItem(`year="${queryYear}"`);
+                            const record = await pb.collection('years').getFirstListItem(`year~"${queryYear}"`);
                             setSectorOptions(record['sectors']);
-                            console.log("new options", record['sectors'])
                         }
                     }}
                 />
@@ -101,27 +124,7 @@ const Navbar = () => {
                     styles={customStyles}
                     placeholder="Select a sector"
                     onChange={async (sector: any) => {
-                        setSelectedSector(sector);
-                        const querySector = sector.value.toString();
-                        const record = await pb.collection(`counties_${year}`).getFirstListItem(`sector="${querySector}"`);
-                        setQuantiles(record['quantiles']);
-                        const employmentMap: any = {};
-                        record['employment'].forEach((entry: { [x: string]: number; }) => {
-                            const county = entry["County"];
-                            const state = entry["State"];
-                            employmentMap[`${county}, ${state}`] = [entry["Percent"], entry["Value"]]
-                        });
-
-                        setEmployment(employmentMap)
-
-                        const records = await pb.collection(`sectors_${year}`).getFullList();
-                        const countyToTopSectorsMap: { [key: string]: string[] } = {};
-
-                        records.forEach(record => {
-                            const topSectors = record.topSectors;
-                            countyToTopSectorsMap[record.county] = topSectors;
-                        });
-                        setTopSectorsMap(countyToTopSectorsMap);
+                        updateSectors(sector);
                     }}
                 />
             </div>

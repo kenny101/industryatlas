@@ -8,7 +8,8 @@ import { useAtom } from "jotai";
 import { yearAtom, sectorOptionsAtom, quantilesAtom, employmentAtom, topSectorsMapAtom, selectedSectorAtom } from "../App";
 import PocketBase from 'pocketbase';
 
-const pb = new PocketBase('http://127.0.0.1:8090');
+const pb = new PocketBase('https://keen-accurately-skink.ngrok-free.app');
+// const pb = new PocketBase('http://127.0.0.1:8090');
 const startYear = 1975;
 const endYear = 2016;
 const options = Array.from({ length: endYear - startYear + 1 }, (_, index) => ({

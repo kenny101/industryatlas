@@ -6,6 +6,10 @@ A major code refactor of [cbp-visualizer](https://github.com/kenny101/cbp-visual
 ![industry-atlas](https://github.com/kenny101/industryatlas/assets/53395124/f755afa8-c7ba-4b20-b0b3-926ca01f8ccc)
 [View the website here](https://industryatlas.vercel.app/)
 
+## Infrastructure and Technical Implementation Decisions
+![Screenshot of pocketbase UI](https://github.com/kenny101/industryatlas/assets/53395124/cea04a0f-6496-4c26-871a-78cd2a929af3)
+Previously CBP Data used a monolithic architecture using MongoDB as the backend and React as the frontend hosted on a single VPS. We've transitioned to a decoupled backend and frontend where backend uses Pocketbase hosted on a VPS while the frontend is hosted on vercel.
+
 ## Background
 This project contains code for the website accompanying the paper ["Imputing Missing Values in the US Census Bureau's County Business Patterns"](http://fpeckert.me/cbp/efsy.pdf) 
 written by Eckert et. al.

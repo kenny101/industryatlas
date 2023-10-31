@@ -8,7 +8,7 @@ import { useAtom } from "jotai";
 import { yearAtom, sectorOptionsAtom, quantilesAtom, employmentAtom, topSectorsMapAtom, selectedSectorAtom } from "../App";
 import PocketBase from 'pocketbase';
 
-const pb = new PocketBase('https://industry-atlas-app.pockethost.io');
+const pb = new PocketBase('https://industryatlas.pockethost.io');
 const startYear = 1975;
 const endYear = 2016;
 const options = Array.from({ length: endYear - startYear + 1 }, (_, index) => ({

@@ -9,7 +9,9 @@ import { yearAtom, sectorOptionsAtom, quantilesAtom, employmentAtom, topSectorsM
 import PocketBase from 'pocketbase';
 
 const pb = new PocketBase('https://industry-atlas-app.pockethost.io');
+const userData = await pb.collection('users').authWithPassword('guest', 'industryatlas');
 pb.autoCancellation(false);
+
 const startYear = 1975;
 const endYear = 2016;
 const options = Array.from({ length: endYear - startYear + 1 }, (_, index) => ({
@@ -42,7 +44,6 @@ async function getAllExportUrls() {
         let valueUrl = pb.getFileUrl(record, file);
         exportMap.set(year, valueUrl);
     }
-    console.log("exportmap:", exportMap);
 }
 
 getAllExportUrls();
@@ -70,7 +71,7 @@ const Navbar = () => {
 
         setEmployment(employmentMap)
 
-        const records = await pb.collection(`sectors_${year}`).getFullList();
+        const records = await pb.collection(`sectors_${year}`).getFullList({perPage:5000});
         const countyToTopSectorsMap: { [key: string]: string[] } = {};
         records.forEach(record => {
             const topSectors = record.topSectors;
@@ -101,7 +102,6 @@ const Navbar = () => {
                         if (typeof selectedYear === 'object' && selectedYear !== null) {
                             const selectedOption = selectedYear as { value: number; label: string };
                             setYear(selectedOption.value.toString());
-                            console.log("selectedYear", selectedYear);
                             let value = selectedOption.value
                             var queryYear = "1975"
                             if (value >= 2012 && value <= 2016) {

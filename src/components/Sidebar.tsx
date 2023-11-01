@@ -9,6 +9,7 @@ import { yearAtom, sectorOptionsAtom, quantilesAtom, employmentAtom, topSectorsM
 import PocketBase from 'pocketbase';
 
 const pb = new PocketBase('https://industry-atlas-app.pockethost.io');
+pb.autoCancellation(false);
 const startYear = 1975;
 const endYear = 2016;
 const options = Array.from({ length: endYear - startYear + 1 }, (_, index) => ({
@@ -29,6 +30,23 @@ const customStyles: StylesConfig = {
         width: "90%",
     }),
 };
+
+const url = '';
+
+const exportMap = new Map<string, string>();
+
+async function getAllExportUrls() {
+    const records = await pb.collection('export').getFullList(); 
+    for (const record of records) { 
+        const {file, year} = record;
+        let valueUrl = pb.getFileUrl(record, file);
+        exportMap.set(year, valueUrl);
+    }
+    console.log("exportmap:", exportMap);
+}
+
+getAllExportUrls();
+
 
 const Navbar = () => {
     const [year, setYear] = useAtom(yearAtom);
@@ -147,7 +165,7 @@ const Navbar = () => {
                     >
                         Research <IconPaper />
                     </a>
-                    <button className="flex-1 btn border-gray-300 bg-orange-50">Export <IconExport /></button>
+                    <a href={exportMap.get(year)} className="flex-1 btn border-gray-300 bg-orange-50">Export <IconExport /></a>
                 </div>
             </div>
         </div>

@@ -9,7 +9,7 @@ import { yearAtom, sectorOptionsAtom, quantilesAtom, employmentAtom, topSectorsM
 import PocketBase from 'pocketbase';
 
 const pb = new PocketBase('https://industry-atlas-app.pockethost.io');
-await pb.collection('users').authWithPassword('guest', 'industryatlas');
+pb.collection('users').authWithPassword('guest', 'industryatlas');
 pb.autoCancellation(false);
 
 const startYear = 1975;

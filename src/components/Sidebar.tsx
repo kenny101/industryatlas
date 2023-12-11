@@ -53,6 +53,8 @@ async function getAllExportUrls() {
 
 getAllExportUrls();
 
+
+
 const Navbar = () => {
   const [year, setYear] = useAtom(yearAtom);
   const [sectorOptions, setSectorOptions] = useAtom(sectorOptionsAtom);
@@ -61,7 +63,14 @@ const Navbar = () => {
   const [, setTopSectorsMap] = useAtom(topSectorsMapAtom);
   const [selectedSector, setSelectedSector] = useAtom(selectedSectorAtom);
 
+  function resetData(){
+    setQuantiles([0, 10, 20, 50, 100, 200, 500, 1000]);
+    setEmployment({});
+    setTopSectorsMap({});
+  }
+
   async function updateSectors(sectorToUpdate: any) {
+    resetData();
     setSelectedSector(sectorToUpdate);
     const querySector = sectorToUpdate.value.toString();
     const record = await pb

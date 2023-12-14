@@ -15,7 +15,7 @@ import {
 } from "../App";
 import PocketBase from "pocketbase";
 
-const pb = new PocketBase("https://industry-atlas-app.pockethost.io");
+const pb = new PocketBase("https://10.5.203.124");
 pb.collection("users").authWithPassword("guest", "industryatlas");
 pb.autoCancellation(false);
 

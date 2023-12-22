@@ -15,6 +15,9 @@ import {
 } from "../App";
 import PocketBase from "pocketbase";
 
+let topSectorsLoading: boolean = false;
+let mapDataLoading: boolean = false;
+
 const pb = new PocketBase("https://industryatlas.org");
 pb.collection("users").authWithPassword("guest", "industryatlas");
 pb.autoCancellation(false);
@@ -53,8 +56,6 @@ async function getAllExportUrls() {
 
 getAllExportUrls();
 
-
-
 const Navbar = () => {
   const [year, setYear] = useAtom(yearAtom);
   const [sectorOptions, setSectorOptions] = useAtom(sectorOptionsAtom);
@@ -63,13 +64,14 @@ const Navbar = () => {
   const [, setTopSectorsMap] = useAtom(topSectorsMapAtom);
   const [selectedSector, setSelectedSector] = useAtom(selectedSectorAtom);
 
-  function resetData(){
+  function resetData() {
     setQuantiles([0, 10, 20, 50, 100, 200, 500, 1000]);
     setEmployment({});
     setTopSectorsMap({});
   }
 
   async function updateSectors(sectorToUpdate: any) {
+    mapDataLoading = true;
     resetData();
     setSelectedSector(sectorToUpdate);
     const querySector = sectorToUpdate.value.toString();
@@ -85,10 +87,10 @@ const Navbar = () => {
     });
 
     setEmployment(employmentMap);
+    mapDataLoading = false;
 
-    const records = await pb
-      .collection(`sectors_${year}`)
-      .getFullList({ perPage: 5000 });
+    topSectorsLoading = true;
+    const records = await pb.collection(`sectors_${year}`).getFullList();
     const countyToTopSectorsMap: { [key: string]: string[] } = {};
     records.forEach((record) => {
       const topSectors = record.topSectors;
@@ -96,6 +98,7 @@ const Navbar = () => {
     });
 
     setTopSectorsMap(countyToTopSectorsMap);
+    topSectorsLoading = false;
   }
 
   return (
@@ -166,7 +169,10 @@ const Navbar = () => {
           }}
         />
       </div>
-      <TopSectorsList />
+      <TopSectorsList
+        topSectorsLoading={topSectorsLoading}
+        mapDataLoading={mapDataLoading}
+      />
       <div className="mt-auto space-y-32">
         <div className="btn-group w-96 flex border-gray-300">
           <a

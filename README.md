@@ -2,9 +2,7 @@
 
 A major code refactor of [cbp-visualizer](https://github.com/kenny101/cbp-visualizer)
 
-<b> Industry is still ongoing development. Awaiting backend deployment.</b> 
 ![industry-atlas](https://github.com/kenny101/industryatlas/assets/53395124/f755afa8-c7ba-4b20-b0b3-926ca01f8ccc)
-[View the website here](https://industryatlas.vercel.app/)
 
 ## Infrastructure and Technical Implementation Decisions
 ![Screenshot of pocketbase UI](https://github.com/kenny101/industryatlas/assets/53395124/cea04a0f-6496-4c26-871a-78cd2a929af3)
